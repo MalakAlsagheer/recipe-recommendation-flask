@@ -27,29 +27,31 @@ all_files_exist = all(os.path.exists(f) for f in REQUIRED_FILES)
 
 if not all_files_exist:
     print("INFO: Data files not found. Downloading from Google Drive...")
-
+    
+    # This is your Google Drive share link
     gdrive_url = "https://drive.google.com/drive/folders/1RAIrTJobyoTomYZ-Wjb_L_qsAM2pKlHl?usp=sharing" 
-   
-
+    
     try:
-        # Download all files from the folder
+        # Download all files from the folder into the current directory
         gdown.download_folder(gdrive_url, quiet=False, use_cookies=False)
         print("INFO: Download complete.")
     except Exception as e:
         print(f"FATAL: Failed to download data files: {e}")
+        # If download fails, the app can't start
+        exit()
 else:
     print("INFO: Data files already exist. Skipping download.")
-
 # --- End of Downloader ---
+
 
 print("--- Starting Server ---")
 print("Loading all assets... This might take a moment.")
 
-
-# Get the full path to the directory where this app.py file lives
-APP_PATH = os.path.dirname(os.path.abspath(__file__))
-
+# --- LOAD ASSETS (This code now runs AFTER the downloader) ---
 try:
+    # Get the full path to the directory where this app.py file lives
+    APP_PATH = os.path.dirname(os.path.abspath(__file__))
+    
     # Build the full path to each model file
     df_path = os.path.join(APP_PATH, "recipes_master_list.csv")
     vectorizer_path = os.path.join(APP_PATH, "tfidf_vectorizer.pkl")
@@ -58,11 +60,11 @@ try:
     # Load the "details" CSV
     df = pd.read_csv(df_path)
     
-    # Load (the TF-IDF vectorizer)
+    # Load the "brain" (the TF-IDF vectorizer)
     with open(vectorizer_path, "rb") as f:
         tfidf_vectorizer = pickle.load(f)
         
-    # Load  (the TF-IDF matrix)
+    # Load the "data" (the TF-IDF matrix)
     tfidf_matrix = load_npz(matrix_path)
 
 except FileNotFoundError as e:
