@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Matbahak{% endblock %}
+
+{% block body_class %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-6 offset-lg-3">
+        
+        <h1 class="main-headline text-center">Create your Account</h1>
+        <p class="main-subtitle text-center mb-4">It's free and only takes a minute.</p>
+
+        <div class="card form-card shadow-sm">
+            <div class="card-body">
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ messages[0] }}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <form action="/register" method="POST">
+
+                    <div class="mb-3 text-start">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                
+                    <div class="mb-3 text-start">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="mb-3 mt-3 text-start">
+                        <label for="password" class.form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-pink-full mt-4">Create Account</button>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p>Already have an account? <a href="/login" style="color: #FF1493; font-weight: 700;">Login here</a></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}{% endblock %}

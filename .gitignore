@@ -1,0 +1,16 @@
+# --- Security ---
+matbahakk-firebase-adminsdk-fbsvc-edca83a4c1.json
+
+# --- Large Data Files ---
+*.csv
+*.npz
+*.pkl
+
+# --- Python/Jupyter Cache ---
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# --- Environment ---
+.env
+venv/

@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}Matbahak - Recipe Finder{% endblock %}
+
+{% block body_class %}homepage-bg{% endblock %}
+
+{% block content %}
+<div class="container text-center px-4">
+    <h1 class="main-headline">What's in your fridge? 🍳</h1>
+    <p class="main-subtitle mb-4">Tell us what you have, and we'll find the perfect recipe for you!</p>
+
+    <form id="recipeForm" action="/search" method="POST">
+        <div class="card shadow-sm form-card">
+            <div class="card-body">
+                
+                <div class="form-step active" data-step="1">
+                    <div class="mb-3 text-start">
+                        <label for="ingredients" class="form-label">What ingredients do you have?</label>
+                        <input type="text" class="form-control" id="ingredients" name="ingredients" placeholder="e.g., chicken, onion" required>
+                    </div>
+                    <button type="button" class="btn btn-pink-full next-btn">Next &rarr;</button>
+                </div>
+
+                <div class="form-step" data-step="2">
+                    <div class="mb-3 text-start">
+                        <label for="cookingTime" class="form-label">Max cooking time</label>
+                        <select class="form-select" id="cookingTime" name="TotalTime">
+                            <option value="any" selected>Any Time</option>
+                            <option value="15">15 Minutes</option>
+                            <option value="30">30 Minutes</option>
+                            <option value="60">60 Minutes</option>
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-grey-prev prev-btn">&larr; Previous</button>
+                        <button type="button" class="btn btn-pink-next next-btn">Next &rarr;</button>
+                    </div>
+                </div>
+
+                <div class="form-step" data-step="3">
+                    <div class="mb-3 text-start">
+                        <label for="difficulty" class="form-label">Difficulty</label>
+                        <select class="form-select" id="difficulty" name="Difficulty">
+                            <option value="any" selected>Any Difficulty</option>
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-grey-prev prev-btn">&larr; Previous</button>
+                        <button type="button" class="btn btn-pink-next next-btn">Next &rarr;</button>
+                    </div>
+                </div>
+
+                <div class="form-step" data-step="4">
+                    <div class="mb-3 text-start">
+                        <label for="rating" class="form-label">Minimum Rating</label>
+                        <select class="form-select" id="rating" name="rating">
+                            <option value="any" selected>Any Rating</option>
+                            <option value="4">4+ Stars</option>
+                            <option value="3">3+ Stars</option>
+                            <option value="2">2+ Stars</option>
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-grey-prev prev-btn">&larr; Previous</button>
+                        <button type="submit" class="btn btn-pink-next">Find Recipes</button>
+                    </div>
+                </div>
+
+                <div class="step-dots" id="step-dots">
+                    <span class="dot active" data-dot="1"></span>
+                    <span class="dot" data-dot="2"></span>
+                    <span class="dot" data-dot="3"></span>
+                    <span class="dot" data-dot="4"></span>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let currentStep = 1;
+        const totalSteps = 4;
+        const formSteps = document.querySelectorAll(".form-step");
+        const dots = document.querySelectorAll(".dot");
+
+        function showStep(stepNumber) {
+            formSteps.forEach(step => step.classList.remove('active'));
+            document.querySelector(`[data-step="${stepNumber}"]`).classList.add('active');
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            document.querySelector(`[data-dot="${stepNumber}"]`).classList.add('active');
+        }
+
+        document.querySelectorAll(".next-btn").forEach(button => {
+            button.addEventListener("click", function() {
+                
+                // --- This is your ingredient check ---
+                if (currentStep === 1) {
+                    const ingredientsInput = document.getElementById("ingredients");
+                    if (ingredientsInput.value.trim() === "") {
+                        alert("Please enter your ingredients first!"); 
+                        return; // Stop
+                    }
+                }
+                
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            });
+        });
+
+        document.querySelectorAll(".prev-btn").forEach(button => {
+            button.addEventListener("click", function() {
+                if (currentStep > 1) {
+                    currentStep--;
+                    showStep(currentStep);
+                }
+            });
+        });
+
+        // Initialize - show first step
+        showStep(1);
+    });
+</script>
+{% endblock %}
+

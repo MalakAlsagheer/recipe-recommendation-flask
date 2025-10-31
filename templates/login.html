@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Matbahak{% endblock %}
+
+{% block body_class %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-6 offset-lg-3">
+        
+        <h1 class="main-headline text-center">Login to your Account</h1>
+        <p class="main-subtitle text-center mb-4">Welcome back! Please enter your details.</p>
+
+        <div class="card form-card shadow-sm">
+            <div class="card-body">
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ messages[0] }}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <form action="/login" method="POST">
+                    <div class.mb-3 text-start">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="mb-3 mt-3 text-start">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-pink-full mt-4">Login</button>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p>Don't have an account? <a href="/register" style="color: #FF1493; font-weight: 700;">Register here</a></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}{% endblock %}
