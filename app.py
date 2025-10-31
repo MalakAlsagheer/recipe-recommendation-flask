@@ -52,10 +52,14 @@ try:
     # Get the full path to the directory where this app.py file lives
     APP_PATH = os.path.dirname(os.path.abspath(__file__))
     
-    # Build the full path to each model file
-    df_path = os.path.join(APP_PATH, "recipes_master_list.csv")
-    vectorizer_path = os.path.join(APP_PATH, "tfidf_vectorizer.pkl")
-    matrix_path = os.path.join(APP_PATH, "tfidf_matrix.npz")
+    # --- THIS IS THE FIX ---
+    # We now build a path into the subfolder where gdown saved the files
+    DATA_SUBFOLDER = "recipe_data_files" 
+    
+    # Build the full path to each model file *inside* the subfolder
+    df_path = os.path.join(APP_PATH, DATA_SUBFOLDER, "recipes_master_list.csv")
+    vectorizer_path = os.path.join(APP_PATH, DATA_SUBFOLDER, "tfidf_vectorizer.pkl")
+    matrix_path = os.path.join(APP_PATH, DATA_SUBFOLDER, "tfidf_matrix.npz")
     
     # Load the "details" CSV
     df = pd.read_csv(df_path)
