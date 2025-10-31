@@ -74,30 +74,29 @@ except FileNotFoundError as e:
 
 # --- FIREBASE INITIALIZATION ---
 try:
+    # 1. Try to get the credentials from the server's Environment Variable
+    cred_json_str = os.environ.get('FIREBASE_CREDENTIALS')
 
+    if cred_json_str:
+        # If running on the server (Render/Heroku), load from the text
+        print("INFO: Loading Firebase credentials from Environment Variable.")
+        cred_dict = json.loads(cred_json_str)
+        cred = credentials.Certificate(cred_dict)
+    else:
+        # If running locally, fall back to your local key file
+        print("WARNING: FIREBASE_CREDENTIALS not set. Falling back to local file.")
+        # ↓↓↓ IMPORTANT: PUT YOUR NEW KEY'S FILENAME HERE ↓↓↓
+        local_key_path = "matbahakk-firebase-adminsdk-fbsvc-edca83a4c1.json" 
+        cred = credentials.Certificate(local_key_path)
 
-# 1. Try to get the credentials from the server's Environment Variable
-cred_json_str = os.environ.get('FIREBASE_CREDENTIALS')
-
-if cred_json_str:
-    # If running on the server (Render/Heroku), load from the text
-    print("INFO: Loading Firebase credentials from Environment Variable.")
-    cred_dict = json.loads(cred_json_str)
-    cred = credentials.Certificate(cred_dict)
-else:
-    # If running locally, fall back to your local key file
-    print("WARNING: FIREBASE_CREDENTIALS not set. Falling back to local file.")
-    # ↓↓↓ IMPORTANT: PUT YOUR NEW KEY'S FILENAME HERE ↓↓↓
-    local_key_path = "matbahakk-firebase-adminsdk-fbsvc-edca83a4c1.json" 
-    cred = credentials.Certificate(local_key_path)
-
-# Initialize the app (this line stays the same)
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://matbahakk-default-rtdb.firebaseio.com/'
-})
+    # Initialize the app (this line stays the same)
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://matbahakk-default-rtdb.firebaseio.com/'
+    })
 
     # Your Web API Key from the Firebase "General" settings
     FIREBASE_WEB_API_KEY = "AIzaSyCIPL7kzhXCu3YUUCzLpMAAof3N0CMAUJE"
+    
 except ValueError:
     pass 
 # --- END FIREBASE INITIALIZATION ---
